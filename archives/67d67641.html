@@ -1,0 +1,468 @@
+<!-- build time:Tue May 28 2019 01:37:45 GMT+0000 (Coordinated Universal Time) --><!DOCTYPE html><html class="theme-next mist use-motion" lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="google-site-verification" content="XCppppl60fPQTlwxDodwZIhMarkybEgwVpcEz85KTuQ"><link rel="stylesheet" href="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext"><link rel="stylesheet" href="//cdn.jsdelivr.net/npm/font-awesome@4/css/font-awesome.min.css"><link rel="stylesheet" href="/css/main.css?v=7.0.1"><link rel="apple-touch-icon" sizes="180x180" href="/images/code.png?v=7.0.1"><link rel="icon" type="image/png" sizes="32x32" href="/images/code.png?v=7.0.1"><link rel="icon" type="image/png" sizes="16x16" href="/images/code.png?v=7.0.1"><link rel="mask-icon" href="/images/code.png?v=7.0.1" color="#222"><script id="hexo.configurations">var NexT=window.NexT||{},CONFIG={root:"/",scheme:"Mist",version:"7.0.1",sidebar:{position:"left",display:"post",offset:12,onmobile:!1,dimmer:!1},back2top:!0,back2top_sidebar:!1,fancybox:!0,fastclick:!0,lazyload:!0,tabs:!0,motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}},algolia:{applicationID:"",apiKey:"",indexName:"",hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}}}</script><meta name="description" content="本文旨在给大家提供一种构建一个完整 UI 库脚手架的思路：包括如何快速并优雅地构建UI库的主页、如何托管主页、如何编写脚本提升自己的开发效率、如何生成 CHANGELOG 等"><meta name="keywords" content="Node.js,Vue.js,Component"><meta property="og:type" content="article"><meta property="og:title" content="使用 Vue cli 3.0 构建自定义组件库"><meta property="og:url" content="https://vxhly.github.io/archives/67d67641.html"><meta property="og:site_name" content="Coding and Fixing"><meta property="og:description" content="本文旨在给大家提供一种构建一个完整 UI 库脚手架的思路：包括如何快速并优雅地构建UI库的主页、如何托管主页、如何编写脚本提升自己的开发效率、如何生成 CHANGELOG 等"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-05-28T01:36:30.390Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="使用 Vue cli 3.0 构建自定义组件库"><meta name="twitter:description" content="本文旨在给大家提供一种构建一个完整 UI 库脚手架的思路：包括如何快速并优雅地构建UI库的主页、如何托管主页、如何编写脚本提升自己的开发效率、如何生成 CHANGELOG 等"><link rel="alternate" href="/axom.xml" title="Coding and Fixing" type="application/atom+xml"><link rel="canonical" href="https://vxhly.github.io/archives/67d67641.html"><script id="page.configurations">CONFIG.page={sidebar:""}</script><title>使用 Vue cli 3.0 构建自定义组件库 | Coding and Fixing</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-title,.use-motion .comments,.use-motion .menu-item,.use-motion .motion-element,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .logo,.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"><style>pre{position:relative;border-radius:2px;padding:25px 0 0}pre.mermaid{background:#d3d3d3;display:flex;justify-content:center;padding:0}pre>span.code-copy{cursor:pointer;position:absolute;top:0;right:0;color:#a44545;background-color:#222;border-bottom-left-radius:2px;border-top-right-radius:2px;text-align:right;font-size:.7em;padding:5px 10px;line-height:15px;height:15px;font-weight:500}code.has-numbering{margin-left:2.5rem}code.has-numbering::-webkit-scrollbar{display:none}.pre-numbering{margin:0;position:absolute;top:33px;padding:0 10px}.pre-numbering li{list-style-type:decimal-leading-zero!important}blockquote{color:#888;background-color:#eae6f3;border-left:1rem solid #5236a0;padding:0 1.5rem;position:relative;font-family:Roboto,sans-serif}blockquote>p{word-wrap:break-word}blockquote:after,blockquote:before{color:#392570;font-size:2.5rem;position:absolute;line-height:2.5rem}@media (max-width:760px){.post-body pre{padding:25px 0 0}.post-body .pre-numbering,blockquote:after,blockquote:before{display:none}code.has-numbering{margin:0}}.image-caption{display:none}</style></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN"><div class="container sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-wrapper"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">Coding and Fixing</span> <span class="logo-line-after"><i></i></span></a></div><h1 class="site-subtitle" itemprop="description">Coding and Fixing</h1></div><div class="site-nav-toggle"><button aria-label="切换导航栏"><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签<span class="badge">41</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类<span class="badge">17</span></a></li><li class="menu-item menu-item-archives menu-item-active"><a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档<span class="badge">104</span></a></li><li class="menu-item menu-item-sitemap"><a href="/sitemap.xml" rel="section"><i class="menu-item-icon fa fa-fw fa-sitemap"></i><br>站点地图</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup search-popup local-search-popup"><div class="local-search-header clearfix"><span class="search-icon"><i class="fa fa-search"></i> </span><span class="popup-btn-close"><i class="fa fa-times-circle"></i></span><div class="local-search-input-wrapper"><input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input"></div></div><div id="local-search-result"></div></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><div class="reading-progress-bar"></div><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><div class="post-block"><link itemprop="mainEntityOfPage" href="https://vxhly.github.io/archives/67d67641.html"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="name" content="星火燎原@vxhly"><meta itemprop="description" content="源于生活而高于生活"><meta itemprop="image" content="/images/avatar.png"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="Coding and Fixing"></span><header class="post-header"><h2 class="post-title" itemprop="name headline">使用 Vue cli 3.0 构建自定义组件库</h2><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time title="创建时间：2019-04-28 17:19:49" itemprop="dateCreated datePublished" datetime="2019-04-28T17:19:49+00:00">2019-04-28</time> <span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-calendar-check-o"></i> </span><span class="post-meta-item-text">更新于</span> <time title="修改时间：2019-05-28 01:36:30" itemprop="dateModified" datetime="2019-05-28T01:36:30+00:00">2019-05-28</time> </span><span class="post-category"><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/vuejs/" itemprop="url" rel="index"><span itemprop="name">vuejs</span></a></span> </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> 阅读次数： <span class="busuanzi-value" id="busuanzi_value_page_pv"></span></span></div></header><div class="post-body" itemprop="articleBody"><p>本文旨在给大家提供一种构建一个完整 UI 库脚手架的思路：包括如何快速并优雅地构建UI库的主页、如何托管主页、如何编写脚本提升自己的开发效率、如何生成 CHANGELOG 等<a id="more"></a></p><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>主流的开源 UI 库代码结构主要分为三大部分：</p><ul><li>组件库本身的代码：这部分代码会发布到 npm 上</li><li>预览示例和查看文档的网站代码：类似 Vant、ElementUI 这类网站。</li><li>配置文件和脚本文件：用于打包和发布等等</li></ul><blockquote><p>编写此博文的灵感 UI 框架库（<span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0VhbW9ubnpoYW5nL3Z1ZS1jYXJkcw==" title="https://github.com/Eamonnzhang/vue-cards">vue-cards<i class="fa fa-external-link"></i></span>）,PS:此 UI　框架库相对于　Vant、ElementUI　会比较简单点，可以作为一份自定义　UI　框架库的入坑　demo，同时这篇博文也是解读这份 UI 框架库的构建到上线的一个过程</p></blockquote><h1 id="前置工作"><a href="#前置工作" class="headerlink" title="前置工作"></a>前置工作</h1><p>以下工作全部基于 Vue CLI 3.x，所以首先要保证机子上有 <code>@vue/cli</code></p><pre><code class="lang-bash">vue create vtp-component # vtp-component 作为教学的库名
+</code></pre><p><code>vue-router</code>, <code>dart-sass</code>, <code>babel</code>, <code>eslint</code> 这些是该项目使用的依赖项，小主可以根据自己的需求进行相应的切换</p><h1 id="start"><a href="#start" class="headerlink" title="start"></a>start</h1><blockquote><p>开始造轮子了</p></blockquote><h2 id="工作目录"><a href="#工作目录" class="headerlink" title="工作目录"></a>工作目录</h2><p>在根目录下新增四个文件夹，一个用来存放组件的代码（packages）,一个用来存放 预览示例的网站 代码（examples）（这里直接把初始化模板的 src 目录更改为 examples 即可，有需要的话可以将该目录进行清空操作，这里就不做过多的说明），一个用来存放编译脚本代码（build）修改当前的工作目录为以下的格式吗，一个用来存放自定义生成组件和组件的说明文档等脚本（scripts）</p><pre><code>|--- build      
+|
+|--- examples
+|
+|--- packages
+|
+|--- scripts
+</code></pre><h2 id="让-webpack-编译-examples"><a href="#让-webpack-编译-examples" class="headerlink" title="让 webpack 编译 examples"></a>让 webpack 编译 examples</h2><p>由于我们将 src 目录修改成了 examples，所以在 <code>vue.config.js</code> 中需要进行相应的修改</p><pre><code class="lang-javascript">const path = require(&#39;path&#39;)
+function resolve (dir) {
+  return path.join(__dirname, dir)
+}
+
+module.exports = {
+  productionSourceMap: true,
+
+  // 修改 src 为 examples
+  pages: {
+    index: {
+      entry: &#39;examples/main.js&#39;,
+      template: &#39;public/index.html&#39;,
+      filename: &#39;index.html&#39;
+    }
+  },
+
+  chainWebpack: config =&gt; {
+    config.resolve.alias
+      .set(&#39;@&#39;, resolve(&#39;examples&#39;))
+  }
+}
+</code></pre><h2 id="添加编译脚本"><a href="#添加编译脚本" class="headerlink" title="添加编译脚本"></a>添加编译脚本</h2><p><code>package.json</code></p><p>其中的组件 name 推荐和创建的项目名一致</p><pre><code class="lang-json">{
+  &quot;scripts&quot;: {
+    &quot;lib&quot;: &quot;vue-cli-service build --target lib --name vtp-component --dest lib packages/index.js&quot;
+  }
+}
+</code></pre><p>修改 main 主入口文件</p><pre><code class="lang-json">{
+  &quot;main&quot;: &quot;lib/vtp-component.common.js&quot;
+}
+</code></pre><h2 id="一个组件例子"><a href="#一个组件例子" class="headerlink" title="一个组件例子"></a>一个组件例子</h2><h3 id="创建组件和组件文档生成脚本"><a href="#创建组件和组件文档生成脚本" class="headerlink" title="创建组件和组件文档生成脚本"></a>创建组件和组件文档生成脚本</h3><p>在 <code>scripts</code> 中创建以下几个文件，其中 <code>create-comp.js</code> 是用来生成自定义组件目录和自定义组件说明文档脚本，<code>delete-comp.js</code> 是用来删除无用的组件目录和自定义组件说明文档脚本，<code>template.js</code> 是生成代码的模板文件</p><pre><code>|--- create-comp.js
+|
+|--- delete-comp.js
+|
+|--- template.js
+</code></pre><p>相关的代码如下，小主可以根据自己的需求进行相应的简单修改，下面的代码参考来源 <span class="exturl" data-url="aHR0cHM6Ly9qdWVqaW4uaW0vcG9zdC81YzY3NzJmZjUxODgyNTYyOWM1Njk0M2M=" title="https://juejin.im/post/5c6772ff518825629c56943c">vue-cli3 项目优化之通过 node 自动生成组件模板 generate View、Component<i class="fa fa-external-link"></i></span></p><p><code>create-comp.js</code></p><pre><code class="lang-javascript">// 创建自定义组件脚本
+
+const chalk = require(&#39;chalk&#39;)
+const path = require(&#39;path&#39;)
+const fs = require(&#39;fs-extra&#39;)
+const uppercamelize = require(&#39;uppercamelcase&#39;)
+const resolve = (...file) =&gt; path.resolve(__dirname, ...file)
+const log = message =&gt; console.log(chalk.green(`${message}`))
+const successLog = message =&gt; console.log(chalk.blue(`${message}`))
+const errorLog = error =&gt; console.log(chalk.red(`${error}`))
+const {
+  vueTemplate,
+  entryTemplate,
+  mdDocs
+} = require(&#39;./template&#39;)
+
+const generateFile = (path, data) =&gt; {
+  if (fs.existsSync(path)) {
+    errorLog(`${path}文件已存在`)
+    return
+  }
+  return new Promise((resolve, reject) =&gt; {
+    fs.writeFile(path, data, &#39;utf8&#39;, err =&gt; {
+      if (err) {
+        errorLog(err.message)
+        reject(err)
+      } else {
+        resolve(true)
+      }
+    })
+  })
+}
+
+// 这里生成自定义组件
+log(&#39;请输入要生成的组件名称,形如 demo 或者 demo-test&#39;)
+let componentName = &#39;&#39;
+process.stdin.on(&#39;data&#39;, async chunk =&gt; {
+  let inputName = String(chunk).trim().toString()
+  inputName = uppercamelize(inputName)
+  const componentDirectory = resolve(&#39;../packages&#39;, inputName)
+  const componentVueName = resolve(componentDirectory, `${inputName}.vue`)
+  const entryComponentName = resolve(componentDirectory, &#39;index.js&#39;)
+
+  const hasComponentDirectory = fs.existsSync(componentDirectory)
+  if (inputName) {
+    // 这里生成组件
+    if (hasComponentDirectory) {
+      errorLog(`${inputName}组件目录已存在，请重新输入`)
+      return
+    } else {
+      log(`生成 component 目录 ${componentDirectory}`)
+      await dotExistDirectoryCreate(componentDirectory)
+    }
+    try {
+      if (inputName.includes(&#39;/&#39;)) {
+        const inputArr = inputName.split(&#39;/&#39;)
+        componentName = inputArr[inputArr.length - 1]
+      } else {
+        componentName = inputName
+      }
+      log(`生成 vue 文件 ${componentVueName}`)
+      await generateFile(componentVueName, vueTemplate(componentName))
+      log(`生成 entry 文件 ${entryComponentName}`)
+      await generateFile(entryComponentName, entryTemplate(componentName))
+      successLog(&#39;生成 component 成功&#39;)
+    } catch (e) {
+      errorLog(e.message)
+    }
+  } else {
+    errorLog(`请重新输入组件名称:`)
+    return
+  }
+
+  // 这里生成自定义组件说明文档
+  const docsDirectory = resolve(&#39;../examples/docs&#39;)
+  const docsMdName = resolve(docsDirectory, `${inputName}.md`)
+
+  try {
+    log(`生成 component 文档 ${docsMdName}`)
+    await generateFile(docsMdName, mdDocs(`${inputName} 组件`))
+    successLog(&#39;生成 component 文档成功&#39;)
+  } catch (e) {
+    errorLog(e.message)
+  }
+
+  process.stdin.emit(&#39;end&#39;)
+})
+
+process.stdin.on(&#39;end&#39;, () =&gt; {
+  log(&#39;exit&#39;)
+  process.exit()
+})
+
+function dotExistDirectoryCreate (directory) {
+  return new Promise((resolve) =&gt; {
+    mkdirs(directory, function () {
+      resolve(true)
+    })
+  })
+}
+
+// 递归创建目录
+function mkdirs (directory, callback) {
+  var exists = fs.existsSync(directory)
+  if (exists) {
+    callback()
+  } else {
+    mkdirs(path.dirname(directory), function () {
+      fs.mkdirSync(directory)
+      callback()
+    })
+  }
+}
+</code></pre><p><code>delete-comp.js</code></p><pre><code class="lang-javascript">// 删除自定义组件脚本
+
+const chalk = require(&#39;chalk&#39;)
+const path = require(&#39;path&#39;)
+const fs = require(&#39;fs-extra&#39;)
+const uppercamelize = require(&#39;uppercamelcase&#39;)
+const resolve = (...file) =&gt; path.resolve(__dirname, ...file)
+const log = message =&gt; console.log(chalk.green(`${message}`))
+const successLog = message =&gt; console.log(chalk.blue(`${message}`))
+const errorLog = error =&gt; console.log(chalk.red(`${error}`))
+
+log(&#39;请输入要删除的组件名称,形如 demo 或者 demo-test&#39;)
+process.stdin.on(&#39;data&#39;, async chunk =&gt; {
+  let inputName = String(chunk).trim().toString()
+  inputName = uppercamelize(inputName)
+  const componentDirectory = resolve(&#39;../packages&#39;, inputName)
+
+  const hasComponentDirectory = fs.existsSync(componentDirectory)
+
+  const docsDirectory = resolve(&#39;../examples/docs&#39;)
+  const docsMdName = resolve(docsDirectory, `${inputName}.md`)
+  if (inputName) {
+    if (hasComponentDirectory) {
+      log(`删除 component 目录 ${componentDirectory}`)
+      await removePromise(componentDirectory)
+      successLog(`已删除 ${inputName} 组件目录`)
+
+      log(`删除 component 文档 ${docsMdName}`)
+      fs.unlink(docsMdName)
+      successLog(`已删除 ${inputName} 组件说明文档`)
+    } else {
+      errorLog(`${inputName}组件目录不存在`)
+      return
+    }
+  } else {
+    errorLog(`请重新输入组件名称:`)
+    return
+  }
+
+  process.stdin.emit(&#39;end&#39;)
+})
+
+process.stdin.on(&#39;end&#39;, () =&gt; {
+  log(&#39;exit&#39;)
+  process.exit()
+})
+
+function removePromise (dir) {
+  return new Promise(function (resolve, reject) {
+    // 先读文件夹
+    fs.stat(dir, function (_err, stat) {
+      if (stat.isDirectory()) {
+        fs.readdir(dir, function (_err, files) {
+          files = files.map(file =&gt; path.join(dir, file)) // a/b  a/m
+          files = files.map(file =&gt; removePromise(file)) // 这时候变成了promise
+          Promise.all(files).then(function () {
+            fs.rmdir(dir, resolve)
+          })
+        })
+      } else {
+        fs.unlink(dir, resolve)
+      }
+    })
+  })
+}
+</code></pre><p><code>template.js</code></p><pre><code class="lang-javascript">module.exports = {
+  vueTemplate: compoenntName =&gt; {
+    compoenntName = compoenntName.charAt(0).toLowerCase() + compoenntName.slice(1)
+    return `&lt;template&gt;
+  &lt;div class=&quot;vtp-${compoenntName}&quot;&gt;
+    ${compoenntName}
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;script&gt;
+export default {
+  name: &#39;vtp-${compoenntName}&#39;,
+
+  data () {
+    return {
+    }
+  },
+
+  props: {
+
+  },
+
+  methods: {}
+}
+&lt;/script&gt;
+
+&lt;style lang=&quot;scss&quot; scope&gt;
+.vtp-${compoenntName}{}
+&lt;/style&gt;
+`
+  },
+  entryTemplate: compoenntName =&gt; {
+    return `import ${compoenntName} from &#39;./${compoenntName}&#39;
+
+${compoenntName}.install = function (Vue) {
+  Vue.component(${compoenntName}.name, ${compoenntName})
+}
+
+export default ${compoenntName}
+
+if (typeof window !== &#39;undefined&#39; &amp;&amp; window.Vue) {
+  window.Vue.component(${compoenntName}.name, ${compoenntName})
+}
+`
+  },
+  mdDocs: (title) =&gt; {
+    return `# ${title}
+&lt;!-- {.md} --&gt;
+
+---
+&lt;!-- {.md} --&gt;
+
+## 如何使用
+&lt;!-- {.md} --&gt;
+
+## Attributes
+&lt;!-- {.md} --&gt;
+
+| 参数  | 说明  | 类型  | 可选值 | 默认值 |
+|-----|-----|-----|-----|-----|
+| -   | -   | -   | -   | -   |
+    `
+  }
+}
+`
+  },
+  entryTemplate: compoenntName =&gt; {
+    return `import ${compoenntName} from &#39;./${compoenntName}&#39;
+
+${compoenntName}.install = function (Vue) {
+  Vue.component(${compoenntName}.name, ${compoenntName})
+}
+
+if (typeof window !== &#39;undefined&#39; &amp;&amp; window.Vue) {
+  window.Vue.component(${compoenntName}.name, ${compoenntName})
+}
+`
+  }
+}
+</code></pre><p>在 <code>build</code> 中创建以下几个文件，其中 <code>build-entry.js</code> 脚本是用来生成自定义组件导出 <code>packages/index.js</code>， <code>get-components.js</code> 脚本是用来获取 <code>packages</code> 目录下的所有组件</p><pre><code>|--- build-entry.js
+|
+|--- get-components.js
+</code></pre><p>相关的代码如下，小主可以根据自己的需求进行相应的简单修改，下面的代码参考来源 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0VhbW9ubnpoYW5nL3Z1ZS1jYXJkcw==" title="https://github.com/Eamonnzhang/vue-cards">vue-cards<i class="fa fa-external-link"></i></span></p><p><code>build-entry.js</code></p><pre><code class="lang-javascript">const fs = require(&#39;fs-extra&#39;)
+const path = require(&#39;path&#39;)
+const chalk = require(&#39;chalk&#39;)
+const uppercamelize = require(&#39;uppercamelcase&#39;)
+const Components = require(&#39;./get-components&#39;)()
+const packageJson = require(&#39;../package.json&#39;)
+const log = message =&gt; console.log(chalk.green(`${message}`))
+
+const version = process.env.VERSION || packageJson.version
+
+function buildPackagesEntry () {
+  const uninstallComponents = []
+
+  const importList = Components.map(
+    name =&gt; `import ${uppercamelize(name)} from &#39;./${name}&#39;`
+  )
+  const exportList = Components.map(name =&gt; `${uppercamelize(name)}`)
+  const intallList = exportList.filter(
+    name =&gt; !~uninstallComponents.indexOf(uppercamelize(name))
+  )
+  const content = `import &#39;normalize.css&#39;
+
+${importList.join(&#39;\n&#39;)}
+
+const version = &#39;${version}&#39;
+const components = [
+  ${intallList.join(&#39;,\n  &#39;)}
+]
+
+const install = Vue =&gt; {
+  if (install.installed) return
+  components.map(component =&gt; Vue.component(component.name, component))
+}
+
+if (typeof window !== &#39;undefined&#39; &amp;&amp; window.Vue) {
+  install(window.Vue)
+}
+
+export {
+  install,
+  version,
+  ${exportList.join(&#39;,\n  &#39;)}
+}
+
+export default {
+  install,
+  version,
+  ...components
+}
+`
+
+  fs.writeFileSync(path.join(__dirname, &#39;../packages/index.js&#39;), content)
+  log(&#39;packages/index.js 文件已更新依赖&#39;)
+  log(&#39;exit&#39;)
+}
+
+buildPackagesEntry()
+</code></pre><p><code>get-components.js</code></p><pre><code class="lang-javascript">const fs = require(&#39;fs&#39;)
+const path = require(&#39;path&#39;)
+
+const excludes = [
+  &#39;index.js&#39;,
+  &#39;theme-chalk&#39;,
+  &#39;mixins&#39;,
+  &#39;utils&#39;,
+  &#39;.DS_Store&#39;
+]
+
+module.exports = function () {
+  const dirs = fs.readdirSync(path.resolve(__dirname, &#39;../packages&#39;))
+  return dirs.filter(dirName =&gt; excludes.indexOf(dirName) === -1)
+}
+</code></pre><h3 id="让-vue-解析-markdown"><a href="#让-vue-解析-markdown" class="headerlink" title="让 vue 解析 markdown"></a>让 vue 解析 markdown</h3><blockquote><p>文档中心的 UI 是如何编码的这里不做阐述，小主可以自行参照 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0VhbW9ubnpoYW5nL3Z1ZS1jYXJkcw==" title="https://github.com/Eamonnzhang/vue-cards">vue-cards<i class="fa fa-external-link"></i></span> 中的实现方式进行改造</p></blockquote><p>需要安装以下的依赖，让 vue 解析 markdown</p><pre><code class="lang-bash">npm i markdown-it-container -D
+npm i markdown-it-decorate -D
+npm i markdown-it-task-checkbox -D
+npm i vue-markdown-loader -D
+</code></pre><blockquote><p>关于 vue.config.js 的配置在 <span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL0VhbW9ubnpoYW5nL3Z1ZS1jYXJkcw==" title="https://github.com/Eamonnzhang/vue-cards">vue-cards<i class="fa fa-external-link"></i></span> 该项目中也有了，不做阐述</p></blockquote><p>这里将补充高亮 <code>highlight.js</code> 以及点击复制代码 <code>clipboard</code> 的实现方式</p><p>安装依赖</p><pre><code class="lang-bash">npm i clipboard highlight.js
+</code></pre><p>改造 <code>App.vue</code>，以下只是列出部分代码，小主可以根据自己的需求进行添加</p><pre><code class="lang-html">&lt;script&gt;
+import hljs from &#39;highlight.js&#39;
+import Clipboard from &#39;clipboard&#39;
+
+const highlightCode = () =&gt; {
+  const preEl = document.querySelectorAll(&#39;pre&#39;)
+
+  preEl.forEach((el, index) =&gt; {
+    hljs.highlightBlock(el)
+
+    const lang = el.children[0].className.split(&#39; &#39;)[1].split(&#39;-&#39;)[1]
+    const pre = el
+    const span = document.createElement(&#39;span&#39;)
+    span.setAttribute(&#39;class&#39;, &#39;code-copy&#39;)
+    span.setAttribute(&#39;data-clipboard-snippet&#39;, &#39;&#39;)
+    span.innerHTML = `${lang.toUpperCase()} | COPY`
+    pre.appendChild(span)
+  })
+}
+
+export default {
+  name: &#39;App&#39;,
+
+  mounted () {
+    if (&#39;onhashchange&#39; in window) {
+      window.onhashchange = function (ev) {
+        let name = window.location.hash.substring(2)
+        router.push({ name })
+      }
+    }
+
+    highlightCode()
+
+    let clipboard = new Clipboard(&#39;.code-copy&#39;, {
+      text: (trigger) =&gt; {
+        return trigger.previousSibling.innerText
+      }
+    })
+    // 复制成功执行的回调
+    clipboard.on(&#39;success&#39;, (e) =&gt; {
+      e.trigger.innerHTML = `已复制`
+    })
+  },
+
+  updated () {
+    highlightCode()
+  }
+}
+&lt;/script&gt;
+</code></pre><h3 id="生成命令"><a href="#生成命令" class="headerlink" title="生成命令"></a>生成命令</h3><p>在 <code>package.json</code> 中添加以下内容，使用命令 <code>yarn new:comp</code> 创建组件目录及其文档或者使用命令 <code>yarn del:comp</code> 即可删除组件目录及其文档</p><pre><code class="lang-json">{
+  &quot;scripts&quot;: {
+    &quot;new:comp&quot;: &quot;node scripts/create-comp.js &amp;&amp; node build/build-entry.js&quot;,
+    &quot;del:comp&quot;: &quot;node scripts/delete-comp.js &amp;&amp; node build/build-entry.js&quot;
+  }
+}
+</code></pre><h1 id="changelog"><a href="#changelog" class="headerlink" title="changelog"></a>changelog</h1><p>在 <code>package.json</code> 中修改 script 字段，接下来你懂的，另一篇博客有介绍哦，小主可以执行搜索</p><pre><code class="lang-json">{
+  &quot;scripts&quot;: {
+    &quot;init&quot;: &quot;npm install commitizen -g &amp;&amp; commitizen init cz-conventional-changelog --save-dev --save-exact &amp;&amp; npm run bootstrap&quot;,
+    &quot;bootstrap&quot;: &quot;npm install&quot;,
+    &quot;changelog&quot;: &quot;conventional-changelog -p angular -i CHANGELOG.md -s -r 0&quot;
+  }
+}
+</code></pre></div><div><div id="reward-container"><div>亲!!! 听说给作者打赏一杯咖啡钱,会给自己带来好运哦!</div><button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">打赏</button><div id="qr" style="display:none"><div style="display:inline-block"><img src="http://oss-blog.test.upcdn.net/wechatpay.jpg" alt="星火燎原@vxhly 微信支付"><p>微信支付</p></div><div style="display:inline-block"><img src="http://oss-blog.test.upcdn.net/alipay.jpg" alt="星火燎原@vxhly 支付宝"><p>支付宝</p></div></div></div></div><div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者： </strong>星火燎原@vxhly</li><li class="post-copyright-link"><strong>本文链接：</strong> <a href="https://vxhly.github.io/archives/67d67641.html" title="使用 Vue cli 3.0 构建自定义组件库">https://vxhly.github.io/archives/67d67641.html</a></li><li class="post-copyright-license"><strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <span class="exturl" data-url="aHR0cHM6Ly9jcmVhdGl2ZWNvbW1vbnMub3JnL2xpY2Vuc2VzL2J5LW5jLXNhLzQuMC8="><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</span> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"><a href="/tags/Node-js/" rel="tag"># Node.js</a> <a href="/tags/Vue-js/" rel="tag"># Vue.js</a> <a href="/tags/Component/" rel="tag"># Component</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/archives/65cc14e3.html" rel="next" title="谈谈 WEB 前端主流的三大框架"><i class="fa fa-chevron-left"></i> 谈谈 WEB 前端主流的三大框架</a></div><span class="post-nav-divider"></span><div class="post-nav-prev post-nav-item"></div></div></footer></div></article></div></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview-wrap">站点概览</li></ul><div class="site-overview-wrap sidebar-panel"><div class="site-overview"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/avatar.png" alt="星火燎原@vxhly"><p class="site-author-name" itemprop="name">星火燎原@vxhly</p><div class="site-description motion-element" itemprop="description">源于生活而高于生活</div></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives/"><span class="site-state-item-count">104</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories/"><span class="site-state-item-count">17</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags/"><span class="site-state-item-count">41</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="feed-link motion-element"><a href="/axom.xml" rel="alternate"><i class="fa fa-rss"></i> RSS</a></div><div class="links-of-author motion-element"><span class="links-of-author-item"><span class="exturl" data-url="aHR0cHM6Ly9naXRodWIuY29tL3Z4aGx5" title="GitHub &rarr; https://github.com/vxhly"><i class="fa fa-fw fa-github"></i></span> </span><span class="links-of-author-item"><span class="exturl" data-url="bWFpbHRvOnBlbmdjaGVuZ291QGdtYWlsLmNvbQ==" title="E-Mail &rarr; mailto:pengchengou@gmail.com"><i class="fa fa-fw fa-envelope"></i></span></span></div><div class="links-of-blogroll motion-element links-of-blogroll-block"><div class="links-of-blogroll-title"><i class="fa fa-fw fa-link"></i> Links</div><ul class="links-of-blogroll-list"><li class="links-of-blogroll-item"><span class="exturl" data-url="aHR0cHM6Ly9tYW4ubGludXhkZS5uZXQv" title="https://man.linuxde.net/">Liunx Command</span></li><li class="links-of-blogroll-item"><span class="exturl" data-url="aHR0cHM6Ly9sZWFzdC5yZW53ZW5sb25nLmNvbS8=" title="https://least.renwenlong.com/">Least CSS pre-processors</span></li><li class="links-of-blogroll-item"><span class="exturl" data-url="aHR0cHM6Ly9jc3Myc2Fzcy5oZXJva3VhcHAuY29tLw==" title="https://css2sass.herokuapp.com/">CSS 2 SASS/SCSS CONVERTER</span></li><li class="links-of-blogroll-item"><span class="exturl" data-url="aHR0cHM6Ly93d3cuYm9vdGNkbi5jbi8=" title="https://www.bootcdn.cn/">BootCDN</span></li><li class="links-of-blogroll-item"><span class="exturl" data-url="aHR0cHM6Ly93d3cudjJleC5jb20v" title="https://www.v2ex.com/">V2EX</span></li></ul></div></div></div><div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#前置工作"><span class="nav-number">2.</span> <span class="nav-text">前置工作</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#start"><span class="nav-number">3.</span> <span class="nav-text">start</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#工作目录"><span class="nav-number">3.1.</span> <span class="nav-text">工作目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#让-webpack-编译-examples"><span class="nav-number">3.2.</span> <span class="nav-text">让 webpack 编译 examples</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加编译脚本"><span class="nav-number">3.3.</span> <span class="nav-text">添加编译脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个组件例子"><span class="nav-number">3.4.</span> <span class="nav-text">一个组件例子</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建组件和组件文档生成脚本"><span class="nav-number">3.4.1.</span> <span class="nav-text">创建组件和组件文档生成脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#让-vue-解析-markdown"><span class="nav-number">3.4.2.</span> <span class="nav-text">让 vue 解析 markdown</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#生成命令"><span class="nav-number">3.4.3.</span> <span class="nav-text">生成命令</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#changelog"><span class="nav-number">4.</span> <span class="nav-text">changelog</span></a></li></ol></div></div></div></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; <span itemprop="copyrightYear">2019</span> <span class="with-love" id="animate"><i class="fa fa-user"></i> </span><span class="author" itemprop="copyrightHolder">星火燎原@vxhly</span></div><div class="busuanzi-count"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item-icon"><i class="fa fa-user"></i> </span><span class="site-uv" title="总访客量"><span class="busuanzi-value" id="busuanzi_value_site_uv"></span> </span><span class="post-meta-divider">|</span> <span class="post-meta-item-icon"><i class="fa fa-eye"></i> </span><span class="site-pv" title="总访问量"><span class="busuanzi-value" id="busuanzi_value_site_pv"></span></span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script>"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script color="255,0,255" opacity="0.5" zindex="-1" count="99" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1/canvas-nest.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery@2/dist/jquery.min.js"></script><script src="//cdn.jsdelivr.net/npm/fastclick@1/lib/fastclick.min.js"></script><script src="//cdn.jsdelivr.net/npm/jquery-lazyload@1/jquery.lazyload.min.js"></script><script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.min.js"></script><script src="//cdn.jsdelivr.net/npm/velocity-animate@1/velocity.ui.min.js"></script><script src="//cdn.jsdelivr.net/gh/fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-reading-progress@1/reading_progress.min.js"></script><script src="/js/src/utils.js?v=7.0.1"></script><script src="/js/src/motion.js?v=7.0.1"></script><script src="/js/src/schemes/muse.js?v=7.0.1"></script><script src="/js/src/scrollspy.js?v=7.0.1"></script><script src="/js/src/post-details.js?v=7.0.1"></script><script src="/js/src/next-boot.js?v=7.0.1"></script><script src="/js/src/js.cookie.js?v=7.0.1"></script><script src="/js/src/scroll-cookie.js?v=7.0.1"></script><script src="/js/src/exturl.js?v=7.0.1"></script><script>function proceedsearch(){$("body").append('<div class="search-popup-overlay local-search-pop-overlay"></div>').css("overflow","hidden"),$(".search-popup-overlay").click(onPopupClose),$(".popup").toggle();var e=$("#local-search-input");e.attr("autocapitalize","none"),e.attr("autocorrect","off"),e.focus()}var isfetched=!1,isXml=!0,search_path="search.xml";0===search_path.length?search_path="search.xml":/json$/i.test(search_path)&&(isXml=!1);var path="/"+search_path,onPopupClose=function(e){$(".popup").hide(),$("#local-search-input").val(""),$(".search-result-list").remove(),$("#no-result").remove(),$(".local-search-pop-overlay").remove(),$("body").css("overflow","")},searchFunc=function(e,t,o){"use strict";$("body").append('<div class="search-popup-overlay local-search-pop-overlay"><div id="search-loading-icon"><i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i></div></div>').css("overflow","hidden"),$("#search-loading-icon").css("margin","20% auto 0 auto").css("text-align","center");var n=function(e){return String(e).replace(/&quot;/g,'"').replace(/&#39;/g,"'").replace(/&#x3A;/g,":").replace(/&#(\d+);/g,function(e,t){return String.fromCharCode(t)}).replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&amp;/g,"&")};$.ajax({url:e,dataType:isXml?"xml":"json",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var r=isXml?$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get():e,a=document.getElementById(t),s=document.getElementById(o),i=function(){var e=a.value.trim().toLowerCase(),t=e.split(/[\s\-]+/);t.length>1&&t.push(e);var o=[];if(e.length>0&&r.forEach(function(r){function a(t,o,n,r){for(var a=r[r.length-1],s=a.position,i=a.word,c=[],h=0;s+i.length<=n&&0!=r.length;){i===e&&h++,c.push({position:s,length:i.length});var p=s+i.length;for(r.pop();0!=r.length&&(a=r[r.length-1],s=a.position,i=a.word,p>s);)r.pop()}return l+=h,{hits:c,start:o,end:n,searchTextCount:h}}function s(e,t){var o="",n=t.start;return t.hits.forEach(function(t){o+=e.substring(n,t.position);var r=t.position+t.length;o+='<b class="search-keyword">'+e.substring(t.position,r)+"</b>",n=r}),o+=e.substring(n,t.end)}var i=!1,c=0,l=0,h=r.title.trim(),p=h.toLowerCase(),u=r.content.trim().replace(/<[^>]+>/g,"");u=n(u);var f=u.toLowerCase(),g=decodeURIComponent(r.url).replace(/\/{2,}/g,"/"),d=[],v=[];if(""!=h&&(t.forEach(function(e){function t(e,t,o){var n=e.length;if(0===n)return[];var r=0,a=[],s=[];for(o||(t=t.toLowerCase(),e=e.toLowerCase());(a=t.indexOf(e,r))>-1;)s.push({position:a,word:e}),r=a+n;return s}d=d.concat(t(e,p,!1)),v=v.concat(t(e,f,!1))}),(d.length>0||v.length>0)&&(i=!0,c=d.length+v.length)),i){[d,v].forEach(function(e){e.sort(function(e,t){return t.position!==e.position?t.position-e.position:e.word.length-t.word.length})});var C=[];0!=d.length&&C.push(a(h,0,h.length,d));for(var m=[];0!=v.length;){var $=v[v.length-1],x=$.position,w=$.word,y=x-20,T=x+80;y<0&&(y=0),T<x+w.length&&(T=x+w.length),T>u.length&&(T=u.length),m.push(a(u,y,T,v))}m.sort(function(e,t){return e.searchTextCount!==t.searchTextCount?t.searchTextCount-e.searchTextCount:e.hits.length!==t.hits.length?t.hits.length-e.hits.length:e.start-t.start});var b=parseInt("1");b>=0&&(m=m.slice(0,b));var E="";E+=0!=C.length?"<li><a href='"+g+"' class='search-result-title'>"+s(h,C[0])+"</a>":"<li><a href='"+g+"' class='search-result-title'>"+h+"</a>",m.forEach(function(e){E+="<a href='"+g+'\'><p class="search-result">'+s(u,e)+"...</p></a>"}),E+="</li>",o.push({item:E,searchTextCount:l,hitCount:c,id:o.length})}}),1===t.length&&""===t[0])s.innerHTML='<div id="no-result"><i class="fa fa-search fa-5x"></i></div>';else if(0===o.length)s.innerHTML='<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>';else{o.sort(function(e,t){return e.searchTextCount!==t.searchTextCount?t.searchTextCount-e.searchTextCount:e.hitCount!==t.hitCount?t.hitCount-e.hitCount:t.id-e.id});var i='<ul class="search-result-list">';o.forEach(function(e){i+=e.item}),i+="</ul>",s.innerHTML=i}};a.addEventListener("input",i),$(".local-search-pop-overlay").remove(),$("body").css("overflow",""),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),isfetched===!1?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(onPopupClose),$(".popup").click(function(e){e.stopPropagation()}),$(document).on("keyup",function(e){var t=27===e.which&&$(".search-popup").is(":visible");t&&onPopupClose()})</script><script>$("body").find("div.pdf").length&&$.ajax({type:"GET",url:"//cdn.jsdelivr.net/npm/pdfobject@2/pdfobject.min.js",dataType:"script",cache:!0,success:function(){$("body").find("div.pdf").each(function(e,t){PDFObject.embed($(t).attr("target"),$(t),{pdfOpenParams:{navpanes:0,toolbar:0,statusbar:0,pagemode:"thumbs",view:"FitH"},PDFJS_URL:"/lib/pdf/web/viewer.html",height:$(t).attr("height")||"500px"})})}})</script><script>$("body").find("pre.mermaid").length&&$.ajax({type:"GET",url:"//cdn.jsdelivr.net/npm/mermaid@8/dist/mermaid.min.js",dataType:"script",cache:!0,success:function(){mermaid.initialize({theme:"forest",logLevel:3,flowchart:{curve:"linear"},gantt:{axisFormat:"%m/%d/%Y"},sequence:{actorMargin:50}})}})</script><script>!function(){var t=document.createElement("script"),e=window.location.protocol.split(":")[0];t.src="https"===e?"https://zz.bdstatic.com/linksubmit/push.js":"http://push.zhanzhang.baidu.com/push.js";var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(t,s)}()</script><script src="//cdn.jsdelivr.net/gh/theme-next/theme-next-bookmark@1/bookmark.min.js"></script><script>bookmark.scrollToMark("auto","#更多")</script><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.1/clipboard.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script><script type="text/javascript">$(function () {
+      // mermaid.initialize({
+      //   startOnLoad: true
+      // });
+
+      $('pre code').not('.lang-mermaid').each(function (i, block) {
+
+        hljs.highlightBlock(block);
+        const lang = $(this).attr('class').split(' ')[0]
+        const pre = $(this).parents('pre')
+        const span = $(`<span class="code-copy" data-clipboard-snippet>${lang.toUpperCase()} | COPY</span>`)
+        pre.append(span)
+        var lines = $(this).text().split('\n').length - 1;
+        var $numbering = $('<ul/>').addClass('pre-numbering');
+        $(this).addClass('has-numbering').parent().append($numbering);
+        for (i = 1; i <= lines; i++) {
+          $numbering.append($('<li/>'));
+        }
+      });
+
+      new ClipboardJS('.code-copy', {
+        target: function (trigger) {
+          return trigger.previousSibling;
+        }
+      });
+    });</script><script async src="https://www.googletagmanager.com/gtag/js?id=UA-135391925-1"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","UA-135391925-1")</script></body></html><!-- rebuild by neat -->
